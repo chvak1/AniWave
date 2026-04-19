@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>AniWave Ultra — Топ 100, календарь, викторина, AI</title>
+    <title>AniWave Ultra — Топ 100, языки озвучки</title>
     
     <!-- PWA манифест -->
     <link rel="manifest" href="data:application/manifest+json,{name:'AniWave Ultra',short_name:'AniWave',icons:[{src:'https://cdn-icons-png.flaticon.com/128/1985/1985740.png',sizes:'128x128',type:'image/png'}],theme_color:'#ff7b9c',background_color:'#0b0c14',display:'standalone',scope:'/'}">
@@ -12,12 +12,13 @@
     <!-- Шрифты и иконки -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/css/flag-icons.min.css">
     
-    <!-- tsParticles для анимированного фона -->
+    <!-- tsParticles -->
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
     
     <style>
-        /* ----- БАЗОВЫЕ ПЕРЕМЕННЫЕ (темы) ----- */
+        /* ----- БАЗОВЫЕ ПЕРЕМЕННЫЕ ----- */
         :root {
             --primary: #ff7b9c;
             --primary-glow: #ff3b6f;
@@ -67,7 +68,6 @@
             min-height: 100vh;
         }
 
-        /* tsParticles фон */
         #tsparticles {
             position: fixed;
             top: 0;
@@ -80,7 +80,7 @@
 
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
-        /* ----- УЛУЧШЕННЫЕ КНОПКИ ----- */
+        /* ----- КНОПКИ ----- */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -122,44 +122,44 @@
             box-shadow: 0 0 24px var(--primary-glow);
         }
 
-        .btn-small {
-            padding: 8px 18px;
+        .btn-small { padding: 8px 18px; font-size: 0.9rem; }
+        .btn-large { padding: 16px 40px; font-size: 1.2rem; }
+
+        /* Языковой переключатель */
+        .language-selector {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
             font-size: 0.9rem;
         }
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .lang-btn .fi { margin-right: 4px; }
 
         /* Звёздный рейтинг */
-        .star-rating {
-            display: flex;
-            gap: 4px;
-            margin: 8px 0;
-        }
-        .star {
-            color: #666;
-            cursor: pointer;
-            font-size: 18px;
-            transition: var(--transition);
-        }
-        .star:hover,
-        .star.active {
-            color: #ffd966;
-            text-shadow: 0 0 8px #ffd966;
-        }
+        .star-rating { display: flex; gap: 4px; margin: 8px 0; }
+        .star { color: #666; cursor: pointer; font-size: 18px; transition: var(--transition); }
+        .star:hover, .star.active { color: #ffd966; text-shadow: 0 0 8px #ffd966; }
 
         /* Прогресс-бар */
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            margin: 8px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.3s;
-        }
+        .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 8px 0; }
+        .progress-fill { height: 100%; background: var(--primary); border-radius: 10px; width: 0%; transition: width 0.3s; }
 
         /* ШАПКА */
         header {
@@ -182,52 +182,20 @@
 
         .search-wrapper { display: flex; align-items: center; background: rgba(20,22,36,0.8); border-radius: 60px; padding: 6px 6px 6px 20px; border: 1px solid rgba(255,120,160,0.2); backdrop-filter: blur(8px); position: relative; }
         #search-input { background: transparent; border: none; padding: 10px 12px; color: var(--text-light); width: 220px; outline: none; }
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            margin-top: 8px;
-            padding: 8px;
-            display: none;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--glass-border);
-            z-index: 1000;
-        }
-        .suggestion-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 12px;
-        }
-        .suggestion-item:hover {
-            background: rgba(255,120,160,0.2);
-        }
 
         .theme-toggle, .music-toggle {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 22px;
-            cursor: pointer;
-            margin-left: 10px;
+            background: none; border: none; color: var(--text-light);
+            font-size: 22px; cursor: pointer; margin-left: 10px;
             transition: var(--transition);
         }
 
         /* Сетка аниме */
         .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; }
         .anime-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: var(--card-radius);
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
+            background: var(--bg-card); backdrop-filter: blur(10px);
+            border-radius: var(--card-radius); overflow: hidden;
+            border: 1px solid var(--glass-border); transition: var(--transition);
+            cursor: pointer; position: relative;
             box-shadow: 0 12px 24px -12px rgba(0,0,0,0.3);
         }
         .anime-card:hover {
@@ -236,27 +204,15 @@
             box-shadow: 0 24px 36px -16px rgba(255, 120, 160, 0.3);
         }
         .card-poster {
-            height: 240px;
-            background-color: #2a2e4a;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 240px; background-color: #2a2e4a;
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
         }
-        .poster-placeholder {
-            font-size: 48px;
-            color: rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #2a2e4a, #1a1e30);
-        }
+        .card-poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card-info { padding: 16px 14px; }
         .anime-title { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+        .anime-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); }
         .rating { color: #ffd966; font-weight: 600; }
         .favorite-btn {
             position: absolute; top: 10px; right: 10px;
@@ -293,24 +249,18 @@
         }
         .modal-close { float: right; font-size: 32px; cursor: pointer; }
 
-        /* Чат-бот */
-        .chatbot { position: fixed; bottom: 24px; right: 24px; z-index: 999; }
-        .chat-toggle {
-            width: 60px; height: 60px; border-radius: 30px; background: var(--btn-gradient);
-            border: none; color: white; font-size: 28px; cursor: pointer;
-            box-shadow: 0 0 30px var(--primary-glow);
+        /* Плеер */
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 16px;
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
         }
-        .chat-window {
-            display: none; width: 340px; height: 480px; background: var(--bg-card);
-            border-radius: 24px; margin-bottom: 12px; padding: 16px; flex-direction: column;
-            border: 1px solid var(--primary);
-        }
-        .chat-messages { flex: 1; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .chat-message { padding: 10px 14px; border-radius: 20px; max-width: 80%; }
-        .chat-message.user { background: var(--primary); color: white; align-self: flex-end; }
-        .chat-message.bot { background: rgba(255,255,255,0.1); align-self: flex-start; }
-        .chat-input { display: flex; gap: 8px; }
-        .chat-input input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); border-radius: 30px; padding: 12px; color: var(--text-light); }
 
         /* Секции */
         section { margin: 70px 0; }
@@ -319,28 +269,21 @@
             margin-bottom: 28px; border-bottom: 2px dashed var(--primary); padding-bottom: 12px;
         }
         .section-header h2 { font-size: 2.3rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .badge {
+            background: rgba(255,120,160,0.15); padding: 6px 18px; border-radius: 40px;
+            color: var(--primary); font-weight: 600; border: 1px solid rgba(255,120,160,0.3);
+        }
 
-        /* История просмотров */
-        .history-panel {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-card);
-            padding: 12px 24px;
-            border-radius: 60px;
-            backdrop-filter: blur(16px);
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            z-index: 997;
-            border: 1px solid var(--primary);
+        /* Статистика топа */
+        .top-stats {
+            display: flex; gap: 16px; align-items: center;
+            background: var(--bg-card); padding: 8px 20px; border-radius: 60px;
+            backdrop-filter: blur(8px);
         }
 
         @media (max-width: 800px) {
             .header-content { flex-direction: column; }
             .filters-bar { border-radius: 32px; }
-            .history-panel { bottom: 80px; }
         }
 
         .hidden { display: none !important; }
@@ -349,10 +292,8 @@
 </head>
 <body>
 
-<!-- tsParticles контейнер -->
 <div id="tsparticles"></div>
 
-<!-- Фоновый эмбиент -->
 <audio id="bg-music" loop>
     <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_2d3f1e9e3c.mp3" type="audio/mpeg">
 </audio>
@@ -364,16 +305,13 @@
             <a href="#" class="active">Главная</a>
             <a href="#top100">Топ 100</a>
             <a href="#start">С чего начать</a>
-            <a href="#calendar">Календарь</a>
             <a href="#quiz">Викторина</a>
             <a href="#" id="favorites-link"><i class="far fa-heart"></i> Избранное</a>
-            <a href="#" id="history-link"><i class="fas fa-history"></i> История</a>
         </nav>
         <div style="display: flex; align-items: center; gap: 8px;">
             <div class="search-wrapper">
                 <i class="fas fa-search" style="color: var(--primary);"></i>
                 <input type="text" id="search-input" placeholder="Поиск аниме..." autocomplete="off">
-                <div class="search-suggestions" id="search-suggestions"></div>
                 <button class="btn btn-small" id="search-btn"><i class="fas fa-arrow-right"></i></button>
             </div>
             <button class="btn btn-small" id="random-anime-btn" title="Случайное аниме"><i class="fas fa-dice"></i></button>
@@ -386,15 +324,18 @@
 <main class="container">
     <div class="hero" style="padding: 50px 0 30px; text-align: center;">
         <h1 style="font-size: 3.5rem; font-weight: 800; background: linear-gradient(to right, #ffe6f0, #d9ceff); -webkit-background-clip: text; background-clip: text; color: transparent;">Открой мир <span class="text-glow">аниме</span></h1>
-        <p style="font-size: 1.3rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 32px;">Топ‑100, персональные рекомендации, календарь онгоингов и умный помощник</p>
-        <a href="#top100" class="btn" style="padding: 16px 48px; font-size: 1.2rem;">Смотреть топ 100 <i class="fas fa-chevron-right"></i></a>
+        <p style="font-size: 1.3rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 32px;">Топ‑100 аниме с озвучкой на русском, английском, японском и китайском</p>
+        <a href="#top100" class="btn btn-large">Смотреть топ 100 <i class="fas fa-chevron-right"></i></a>
     </div>
 
     <!-- ТОП 100 -->
     <section id="top100">
         <div class="section-header">
             <h2><i class="fas fa-crown" style="color: var(--primary);"></i> Топ 100 аниме</h2>
-            <span class="badge"><i class="far fa-star"></i> фильтры и сортировка</span>
+            <div class="top-stats">
+                <span id="anime-count">0 / 100 загружено</span>
+                <button id="load-all-top100" class="btn btn-small"><i class="fas fa-cloud-download-alt"></i> Загрузить все 100</button>
+            </div>
         </div>
 
         <div class="filters-bar">
@@ -425,11 +366,6 @@
             </select>
             <button id="apply-filters" class="btn btn-small">Применить</button>
             <button id="clear-filters" class="btn btn-outline btn-small">Сбросить</button>
-            <button id="export-favorites" class="btn btn-outline btn-small"><i class="fas fa-download"></i> Экспорт</button>
-            <label class="btn btn-outline btn-small" style="cursor:pointer;">
-                <i class="fas fa-upload"></i> Импорт
-                <input type="file" id="import-favorites" accept=".json" style="display:none;">
-            </label>
         </div>
 
         <div id="anime-grid-container" class="anime-grid"></div>
@@ -460,14 +396,6 @@
         </div>
     </section>
 
-    <!-- КАЛЕНДАРЬ -->
-    <section id="calendar">
-        <div class="section-header">
-            <h2><i class="far fa-calendar-alt"></i> Онгоинги</h2>
-        </div>
-        <div id="calendar-container">Загрузка...</div>
-    </section>
-
     <!-- ВИКТОРИНА -->
     <section id="quiz">
         <div class="section-header">
@@ -479,27 +407,9 @@
             <div id="quiz-result"></div>
         </div>
     </section>
-
-    <!-- ИЗБРАННОЕ -->
-    <section id="favorites-section" style="display:none;">
-        <div class="section-header">
-            <h2><i class="fas fa-heart"></i> Избранное</h2>
-            <button id="clear-favorites" class="btn-outline btn-small">Очистить</button>
-        </div>
-        <div id="favorites-grid" class="anime-grid"></div>
-    </section>
-
-    <!-- ИСТОРИЯ ПРОСМОТРОВ -->
-    <section id="history-section" style="display:none;">
-        <div class="section-header">
-            <h2><i class="fas fa-history"></i> История просмотров</h2>
-            <button id="clear-history" class="btn-outline btn-small">Очистить</button>
-        </div>
-        <div id="history-grid" class="anime-grid"></div>
-    </section>
 </main>
 
-<!-- Модальное окно -->
+<!-- Модальное окно с языками и плеером -->
 <div class="modal" id="animeModal">
     <div class="modal-content">
         <span class="modal-close">&times;</span>
@@ -507,22 +417,8 @@
     </div>
 </div>
 
-<!-- Чат-бот -->
-<div class="chatbot">
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-messages" id="chatMessages">
-            <div class="chat-message bot">Привет! Спроси про аниме.</div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Например: романтика...">
-            <button id="chatSend" class="btn btn-small"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-    <button class="chat-toggle" id="chatToggle"><i class="fas fa-robot"></i></button>
-</div>
-
-<!-- Панель уведомлений -->
-<div class="history-panel hidden" id="notification-panel">
+<!-- Уведомления -->
+<div class="history-panel hidden" id="notification-panel" style="position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--bg-card); padding:12px 24px; border-radius:60px; z-index:997;">
     <span id="notification-text"></span>
 </div>
 
@@ -530,7 +426,7 @@
 (function(){
     "use strict";
 
-    // ---------- ИНИЦИАЛИЗАЦИЯ ЧАСТИЦ ----------
+    // ---------- ЧАСТИЦЫ ----------
     tsParticles.load("tsparticles", {
         fpsLimit: 60,
         particles: {
@@ -539,7 +435,7 @@
             shape: { type: "circle" },
             opacity: { value: 0.5, random: true },
             size: { value: 3, random: true },
-            move: { enable: true, speed: 0.5, direction: "none", random: true, straight: false, outModes: "out" }
+            move: { enable: true, speed: 0.5, direction: "none", random: true, outModes: "out" }
         },
         interactivity: {
             events: { onHover: { enable: true, mode: "repulse" } },
@@ -548,31 +444,53 @@
         detectRetina: true
     });
 
-    // ---------- ФОНОВАЯ МУЗЫКА ----------
+    // ---------- МУЗЫКА ----------
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('musicToggle');
     let musicPlaying = false;
-    
     musicToggle.addEventListener('click', () => {
-        if (musicPlaying) {
-            bgMusic.pause();
-            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-        } else {
-            bgMusic.play().catch(() => {});
-            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-        }
+        if (musicPlaying) { bgMusic.pause(); musicToggle.innerHTML = '<i class="fas fa-music"></i>'; }
+        else { bgMusic.play().catch(()=>{}); musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>'; }
         musicPlaying = !musicPlaying;
     });
 
-    // ---------- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ----------
+    // ---------- ДАННЫЕ JUJUTSU KAISEN (вручную) ----------
+    const jjkData = [
+        {
+            mal_id: 99999,
+            title: 'Jujutsu Kaisen 0: The Movie',
+            title_ru: 'Магическая битва 0',
+            images: { jpg: { image_url: 'https://m.media-amazon.com/images/M/MV5BODI1YjI4YzQtYjQxNC00NzI1LTk5YzItYjI2ZThjYzA5YjA5XkEyXkFqcGc@._V1_.jpg' } },
+            score: 8.8,
+            genres: ['Экшен', 'Сверхъестественное', 'Драма'],
+            year: 2021,
+            type: 'Movie',
+            synopsis: 'Юта Оккоцу — старшеклассник, которого преследует проклятие его подруги детства Рики, погибшей в автокатастрофе. Рика стала могущественным мстительным духом, и Юта хочет умереть, чтобы никому не навредить. Но величайший маг Сатору Годзё забирает его в Токийский магический колледж, где Юта решает научиться контролировать проклятие Рики.',
+            episodes: 1
+        },
+        {
+            mal_id: 99998,
+            title: 'Jujutsu Kaisen (Season 1)',
+            title_ru: 'Магическая битва (1 сезон)',
+            images: { jpg: { image_url: 'https://m.media-amazon.com/images/M/MV5BNGYyNmI2YjAtMTU5MS00MjAxLThhZDgtNjZmYzE1YjE3MjUwXkEyXkFqcGc@._V1_.jpg' } },
+            score: 8.9,
+            genres: ['Экшен', 'Сверхъестественное', 'Сёнэн'],
+            year: 2020,
+            type: 'TV',
+            synopsis: 'Юдзи Итадори — необычайно сильный старшеклассник, который после проглатывания пальца древнего проклятия Сукуны становится его сосудом. Чтобы защитить людей и найти остальные пальцы, он вступает в Токийский магический колледж под руководством сильнейшего мага Сатору Годзё.',
+            episodes: 24
+        }
+    ];
+
+    // Глобальные переменные
     let allAnimeData = [];
     let filteredAnime = [];
     let favorites = JSON.parse(localStorage.getItem('animeFavorites') || '[]');
-    let history = JSON.parse(localStorage.getItem('animeHistory') || '[]');
     let userRatings = JSON.parse(localStorage.getItem('userRatings') || '{}');
     let watchProgress = JSON.parse(localStorage.getItem('watchProgress') || '{}');
     let currentPage = 1;
     let isLoading = false;
+    let isFullTop100Loaded = false;
     let currentFilters = { genre: '', year: '', type: '' };
     let currentSort = 'rating_desc';
     let searchTerm = '';
@@ -580,27 +498,29 @@
     const grid = document.getElementById('anime-grid-container');
     const modal = document.getElementById('animeModal');
     const modalBody = document.getElementById('modal-body');
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
+    const countDisplay = document.getElementById('anime-count');
+    const loadAllBtn = document.getElementById('load-all-top100');
+    const loadingDiv = document.getElementById('loading-indicator');
 
     // ---------- ТЕМЫ ----------
+    const themeToggle = document.getElementById('themeToggle');
     function setTheme(theme) {
-        body.classList.remove('light-theme', 'amoled-theme');
-        if (theme === 'light') body.classList.add('light-theme');
-        else if (theme === 'amoled') body.classList.add('amoled-theme');
+        document.body.classList.remove('light-theme', 'amoled-theme');
+        if (theme === 'light') document.body.classList.add('light-theme');
+        else if (theme === 'amoled') document.body.classList.add('amoled-theme');
         localStorage.setItem('theme', theme);
     }
     setTheme(localStorage.getItem('theme') || 'dark');
     themeToggle.addEventListener('click', () => {
-        if (body.classList.contains('light-theme')) setTheme('amoled');
-        else if (body.classList.contains('amoled-theme')) setTheme('dark');
+        if (document.body.classList.contains('light-theme')) setTheme('amoled');
+        else if (document.body.classList.contains('amoled-theme')) setTheme('dark');
         else setTheme('light');
     });
 
-    // ---------- API ЗАГРУЗКА ----------
-    async function fetchTopAnime(page = 1) {
+    // ---------- API ----------
+    async function fetchTopAnimePage(page) {
         try {
-            const res = await fetch(`https://api.jikan.moe/v4/top/anime?page=${page}&limit=24`);
+            const res = await fetch(`https://api.jikan.moe/v4/top/anime?page=${page}&limit=25`);
             const data = await res.json();
             return data.data.map(item => ({
                 mal_id: item.mal_id,
@@ -611,30 +531,49 @@
                 year: item.aired?.from ? new Date(item.aired.from).getFullYear() : null,
                 type: item.type,
                 synopsis: item.synopsis,
-                episodes: item.episodes
+                episodes: item.episodes || 12
             }));
         } catch(e) {
-            return Array.from({length:24}, (_,i) => ({
-                mal_id: 10000 + i,
-                title: `Аниме ${i+1}`,
-                images: { jpg: { image_url: `https://picsum.photos/200/300?random=${i}` } },
-                score: (7.5 + (i%20)/10).toFixed(1),
-                genres: [['Экшен','Комедия','Драма'][i%3]],
-                year: 2015 + (i%10),
-                type: 'TV',
-                synopsis: 'Описание временно недоступно.',
-                episodes: 12 + (i%24)
-            }));
+            return [];
         }
+    }
+
+    async function loadFullTop100() {
+        if (isFullTop100Loaded) return;
+        isLoading = true;
+        loadingDiv.style.display = 'block';
+        loadAllBtn.disabled = true;
+        loadAllBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Загрузка...';
+        
+        const pages = [1, 2, 3, 4];
+        const results = await Promise.all(pages.map(p => fetchTopAnimePage(p)));
+        let fullData = results.flat();
+        
+        // Добавляем Jujutsu Kaisen в начало
+        fullData = [...jjkData, ...fullData];
+        
+        const uniqueMap = new Map();
+        fullData.forEach(item => uniqueMap.set(item.mal_id, item));
+        allAnimeData = Array.from(uniqueMap.values()).slice(0, 100);
+        
+        isFullTop100Loaded = true;
+        isLoading = false;
+        loadingDiv.style.display = 'none';
+        loadAllBtn.innerHTML = '<i class="fas fa-check"></i> Загружено 100';
+        loadAllBtn.disabled = false;
+        
+        applyFiltersAndSort();
     }
 
     async function loadInitialAnime() {
         isLoading = true;
-        const data = await fetchTopAnime(currentPage);
-        allAnimeData = data;
+        let data = await fetchTopAnimePage(1);
+        // Добавляем JJK
+        data = [...jjkData, ...data];
+        allAnimeData = data.slice(0, 25);
         applyFiltersAndSort();
         isLoading = false;
-        document.getElementById('loading-indicator').style.display = 'none';
+        loadingDiv.style.display = 'none';
     }
 
     function applyFiltersAndSort() {
@@ -653,24 +592,30 @@
 
         filteredAnime = filtered;
         renderGrid();
+        updateCountDisplay();
     }
 
-    // Создание карточки с рейтингом и прогрессом
+    function updateCountDisplay() {
+        countDisplay.textContent = `${allAnimeData.length} / 100 загружено`;
+    }
+
+    function renderGrid() {
+        grid.innerHTML = '';
+        filteredAnime.forEach(a => grid.appendChild(createAnimeCard(a)));
+        document.getElementById('no-results-msg').classList.toggle('hidden', filteredAnime.length > 0);
+    }
+
     function createAnimeCard(anime) {
         const card = document.createElement('div');
         card.className = 'anime-card';
         const isFav = favorites.includes(anime.mal_id);
         const userRating = userRatings[anime.mal_id] || 0;
-        const progress = watchProgress[anime.mal_id] || 0;
         
         const posterDiv = document.createElement('div');
         posterDiv.className = 'card-poster';
         const img = document.createElement('img');
         img.src = anime.images?.jpg?.image_url || '';
         img.alt = anime.title;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
         img.onerror = () => { img.src = 'https://via.placeholder.com/200x300?text=Нет+постера'; };
         posterDiv.appendChild(img);
         
@@ -682,29 +627,15 @@
         const infoDiv = document.createElement('div');
         infoDiv.className = 'card-info';
         
-        // Звёздный рейтинг
         const starsDiv = document.createElement('div');
         starsDiv.className = 'star-rating';
         for (let i = 1; i <= 10; i++) {
             const star = document.createElement('span');
             star.className = `star ${i <= userRating ? 'active' : ''}`;
             star.innerHTML = '★';
-            star.onclick = (e) => {
-                e.stopPropagation();
-                userRatings[anime.mal_id] = i;
-                localStorage.setItem('userRatings', JSON.stringify(userRatings));
-                renderGrid();
-            };
+            star.onclick = (e) => { e.stopPropagation(); userRatings[anime.mal_id] = i; localStorage.setItem('userRatings', JSON.stringify(userRatings)); renderGrid(); };
             starsDiv.appendChild(star);
         }
-        
-        // Прогресс-бар
-        const progressDiv = document.createElement('div');
-        progressDiv.className = 'progress-bar';
-        const progressFill = document.createElement('div');
-        progressFill.className = 'progress-fill';
-        progressFill.style.width = `${(progress / (anime.episodes || 12)) * 100}%`;
-        progressDiv.appendChild(progressFill);
         
         infoDiv.innerHTML = `
             <div class="anime-title" title="${anime.title}">${anime.title}</div>
@@ -714,43 +645,15 @@
             </div>
         `;
         infoDiv.appendChild(starsDiv);
-        infoDiv.appendChild(progressDiv);
-        
-        // Эпизоды (ввод прогресса)
-        const episodeInput = document.createElement('input');
-        episodeInput.type = 'number';
-        episodeInput.min = 0;
-        episodeInput.max = anime.episodes || 12;
-        episodeInput.value = progress;
-        episodeInput.style.width = '60px';
-        episodeInput.style.marginTop = '8px';
-        episodeInput.style.background = 'rgba(255,255,255,0.1)';
-        episodeInput.style.border = '1px solid var(--glass-border)';
-        episodeInput.style.color = 'var(--text-light)';
-        episodeInput.style.borderRadius = '8px';
-        episodeInput.style.padding = '4px';
-        episodeInput.onclick = (e) => e.stopPropagation();
-        episodeInput.onchange = (e) => {
-            watchProgress[anime.mal_id] = parseInt(e.target.value) || 0;
-            localStorage.setItem('watchProgress', JSON.stringify(watchProgress));
-            renderGrid();
-        };
-        infoDiv.appendChild(episodeInput);
         
         card.appendChild(posterDiv);
         card.appendChild(favBtn);
         card.appendChild(infoDiv);
         
-        card.addEventListener('click', () => openModal(anime));
+        card.addEventListener('click', () => openAnimeModal(anime));
         return card;
     }
 
-    function renderGrid() {
-        grid.innerHTML = '';
-        filteredAnime.slice(0, currentPage * 24).forEach(a => grid.appendChild(createAnimeCard(a)));
-    }
-
-    // Избранное
     function toggleFavorite(id, btn) {
         if (favorites.includes(id)) favorites = favorites.filter(f => f !== id);
         else favorites.push(id);
@@ -758,72 +661,57 @@
         btn.classList.toggle('active');
     }
 
-    // Модальное окно с трейлером
-    async function openModal(anime) {
-        history.push(anime.mal_id);
-        localStorage.setItem('animeHistory', JSON.stringify(history));
-        
+    // Универсальное модальное окно с языками и плеером
+    function openAnimeModal(anime) {
         modal.style.display = 'flex';
-        let trailerHtml = '';
-        try {
-            const res = await fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/videos`);
-            const data = await res.json();
-            const trailer = data.data.promo?.[0]?.trailer?.youtube_id;
-            if (trailer) {
-                trailerHtml = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${trailer}" frameborder="0" allowfullscreen></iframe>`;
-            }
-        } catch(e) {}
+        
+        // Определяем, является ли это одним из JJK для кастомного текста
+        const isJJK = anime.mal_id === 99999 || anime.mal_id === 99998;
+        const titleExtra = isJJK ? (anime.mal_id === 99999 ? ' • Фильм • 1ч 44м' : ' • Сериал • 24 эп.') : '';
         
         modalBody.innerHTML = `
             <h2>${anime.title}</h2>
-            ${trailerHtml}
-            <p>Рейтинг: ${anime.score || '—'}</p>
-            <p>${anime.synopsis || ''}</p>
+            ${isJJK ? `<p style="color: var(--text-muted);">${anime.title_ru}${titleExtra}</p>` : ''}
+            
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="jp"><span class="fi fi-jp"></span> 日本語 (Оригинал)</button>
+                <button class="lang-btn" data-lang="ru"><span class="fi fi-ru"></span> Русский</button>
+                <button class="lang-btn" data-lang="en"><span class="fi fi-us"></span> English</button>
+                <button class="lang-btn" data-lang="zh"><span class="fi fi-cn"></span> 中文</button>
+            </div>
+            
+            <div class="video-player" id="videoPlayer">
+                <i class="fas fa-play-circle" style="font-size: 48px; opacity: 0.5;"></i>
+                <span style="margin-left: 16px;">Выберите язык озвучки</span>
+            </div>
+            
+            <p style="margin-top: 16px;"><strong>Рейтинг:</strong> ${anime.score || '—'} <i class="fas fa-star" style="color: #ffd966;"></i></p>
+            <p><strong>Жанры:</strong> ${anime.genres?.join(', ') || '—'}</p>
+            <p><strong>Год:</strong> ${anime.year || '—'}</p>
+            <p style="margin-top: 16px;">${anime.synopsis || 'Описание временно недоступно.'}</p>
+            <p style="margin-top: 20px; padding: 12px; background: rgba(255,120,160,0.1); border-radius: 16px;">
+                <i class="fas fa-globe"></i> Озвучка и субтитры доступны на выбранном языке. 
+                ${isJJK ? 'Доступно на Crunchyroll, Netflix, Prime Video.' : ''}
+            </p>
         `;
+        
+        // Обработчики языков
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const lang = btn.dataset.lang;
+                const langNames = { ru: 'Русская', en: 'Английская', jp: 'Японская', zh: 'Китайская' };
+                const videoPlayer = document.getElementById('videoPlayer');
+                videoPlayer.innerHTML = `
+                    <i class="fas fa-film" style="font-size: 48px; opacity: 0.7;"></i>
+                    <span style="margin-left: 16px;">Включена ${langNames[lang]} озвучка</span>
+                `;
+                showNotification(`Язык изменён на ${btn.textContent.trim()}`);
+            });
+        });
     }
 
-    document.querySelector('.modal-close').onclick = () => modal.style.display = 'none';
-    
-    // Случайное аниме
-    document.getElementById('random-anime-btn').addEventListener('click', () => {
-        if (filteredAnime.length > 0) {
-            const random = filteredAnime[Math.floor(Math.random() * filteredAnime.length)];
-            openModal(random);
-        }
-    });
-
-    // Экспорт/импорт избранного
-    document.getElementById('export-favorites').addEventListener('click', () => {
-        const data = JSON.stringify({ favorites, userRatings, watchProgress });
-        const blob = new Blob([data], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'aniwave-data.json';
-        a.click();
-    });
-
-    document.getElementById('import-favorites').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                try {
-                    const data = JSON.parse(ev.target.result);
-                    favorites = data.favorites || [];
-                    userRatings = data.userRatings || {};
-                    watchProgress = data.watchProgress || {};
-                    localStorage.setItem('animeFavorites', JSON.stringify(favorites));
-                    localStorage.setItem('userRatings', JSON.stringify(userRatings));
-                    localStorage.setItem('watchProgress', JSON.stringify(watchProgress));
-                    renderGrid();
-                    showNotification('Данные импортированы!');
-                } catch(e) {}
-            };
-            reader.readAsText(file);
-        }
-    });
-
-    // Уведомления
     function showNotification(text) {
         const panel = document.getElementById('notification-panel');
         document.getElementById('notification-text').textContent = text;
@@ -831,30 +719,30 @@
         setTimeout(() => panel.classList.add('hidden'), 3000);
     }
 
-    // Поиск с подсказками
-    const searchInput = document.getElementById('search-input');
-    const suggestionsDiv = document.getElementById('search-suggestions');
-    
-    searchInput.addEventListener('input', () => {
-        const val = searchInput.value.toLowerCase();
-        if (val.length < 2) {
-            suggestionsDiv.style.display = 'none';
-            return;
+    // Закрытие модалки
+    document.querySelector('.modal-close').onclick = () => modal.style.display = 'none';
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+    // Кнопки
+    loadAllBtn.addEventListener('click', loadFullTop100);
+
+    document.getElementById('random-anime-btn').addEventListener('click', () => {
+        if (filteredAnime.length > 0) {
+            const random = filteredAnime[Math.floor(Math.random() * filteredAnime.length)];
+            openAnimeModal(random);
         }
-        const matches = allAnimeData.filter(a => a.title.toLowerCase().includes(val)).slice(0, 5);
-        if (matches.length) {
-            suggestionsDiv.innerHTML = matches.map(a => `<div class="suggestion-item">${a.title}</div>`).join('');
-            suggestionsDiv.style.display = 'block';
-            document.querySelectorAll('.suggestion-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    searchInput.value = el.textContent;
-                    suggestionsDiv.style.display = 'none';
-                    searchTerm = el.textContent;
-                    applyFiltersAndSort();
-                });
-            });
-        } else {
-            suggestionsDiv.style.display = 'none';
+    });
+
+    // Поиск
+    const searchInput = document.getElementById('search-input');
+    document.getElementById('search-btn').addEventListener('click', () => {
+        searchTerm = searchInput.value.trim();
+        applyFiltersAndSort();
+    });
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchTerm = searchInput.value.trim();
+            applyFiltersAndSort();
         }
     });
 
@@ -867,33 +755,47 @@
         applyFiltersAndSort();
     });
 
-    // Чат-бот
-    const chatWindow = document.getElementById('chatWindow');
-    document.getElementById('chatToggle').addEventListener('click', () => {
-        chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
-    });
-    
-    document.getElementById('chatSend').addEventListener('click', () => {
-        const msg = document.getElementById('chatInput').value;
-        if (!msg) return;
-        const messages = document.getElementById('chatMessages');
-        messages.innerHTML += `<div class="chat-message user">${msg}</div>`;
-        setTimeout(() => {
-            let reply = 'Советую "Стальной алхимик"!';
-            if (msg.includes('романтика')) reply = 'Попробуй "Твоё имя"';
-            messages.innerHTML += `<div class="chat-message bot">${reply}</div>`;
-        }, 500);
-        document.getElementById('chatInput').value = '';
+    document.getElementById('clear-filters').addEventListener('click', () => {
+        document.getElementById('genre-filter').value = '';
+        document.getElementById('year-filter').value = '';
+        document.getElementById('type-filter').value = '';
+        document.getElementById('sort-select').value = 'rating_desc';
+        currentFilters = { genre: '', year: '', type: '' };
+        currentSort = 'rating_desc';
+        searchTerm = '';
+        searchInput.value = '';
+        applyFiltersAndSort();
     });
 
-    // Викторина (упрощённая)
+    // Кликабельные названия в "С чего начать"
+    document.querySelectorAll('.clickable-title').forEach(el => {
+        el.addEventListener('click', () => {
+            searchInput.value = el.innerText;
+            searchTerm = el.innerText;
+            applyFiltersAndSort();
+        });
+    });
+
+    // Избранное
+    document.getElementById('favorites-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        const favAnime = allAnimeData.filter(a => favorites.includes(a.mal_id));
+        if (favAnime.length === 0) {
+            showNotification('В избранном пока пусто');
+            return;
+        }
+        modal.style.display = 'flex';
+        modalBody.innerHTML = '<h2>Избранное</h2><div class="anime-grid" style="margin-top:20px;"></div>';
+        const gridFav = modalBody.querySelector('.anime-grid');
+        favAnime.forEach(a => gridFav.appendChild(createAnimeCard(a)));
+    });
+
+    // Викторина
     const quizQuestions = [
         { q: "Какой жанр?", opts: ["Экшен", "Романтика", "Комедия"] },
         { q: "Фэнтези?", opts: ["Да", "Нет"] }
     ];
-    let quizStep = 0;
-    let quizAnswers = [];
-    
+    let quizStep = 0, quizAnswers = [];
     function updateQuiz() {
         if (quizStep < quizQuestions.length) {
             const q = quizQuestions[quizStep];
@@ -909,21 +811,17 @@
                 optsDiv.appendChild(btn);
             });
         } else {
-            let rec = 'Атака титанов';
+            let rec = 'Jujutsu Kaisen';
             if (quizAnswers.includes('Романтика')) rec = 'Твоё имя';
+            else if (quizAnswers.includes('Комедия')) rec = 'Гинтама';
             document.getElementById('quiz-result').innerHTML = `<h3>Рекомендуем: ${rec}</h3>`;
             document.getElementById('quiz-options').innerHTML = '';
         }
     }
     updateQuiz();
 
-    // Запуск
+    // Старт
     loadInitialAnime();
-
-    // Календарь (заглушка)
-    document.getElementById('calendar-container').innerHTML = 'Пн Вт Ср Чт Пт Сб Вс'.split(' ').map(d => 
-        `<div style="background:var(--bg-card); padding:10px; border-radius:16px;"><strong>${d}</strong><br>—</div>`
-    ).join('');
 })();
 </script>
 </body>
