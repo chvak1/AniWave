@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>AniWave Ultra — Топ 100, языки озвучки</title>
+    <title>AniWave Ultra — Топ 100, смотреть онлайн</title>
     
     <!-- PWA манифест -->
     <link rel="manifest" href="data:application/manifest+json,{name:'AniWave Ultra',short_name:'AniWave',icons:[{src:'https://cdn-icons-png.flaticon.com/128/1985/1985740.png',sizes:'128x128',type:'image/png'}],theme_color:'#ff7b9c',background_color:'#0b0c14',display:'standalone',scope:'/'}">
@@ -150,16 +150,39 @@
             color: white;
             border-color: var(--primary);
         }
-        .lang-btn .fi { margin-right: 4px; }
+
+        /* Платформы для просмотра */
+        .watch-platforms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .platform-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .platform-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
 
         /* Звёздный рейтинг */
         .star-rating { display: flex; gap: 4px; margin: 8px 0; }
         .star { color: #666; cursor: pointer; font-size: 18px; transition: var(--transition); }
         .star:hover, .star.active { color: #ffd966; text-shadow: 0 0 8px #ffd966; }
-
-        /* Прогресс-бар */
-        .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 8px 0; }
-        .progress-fill { height: 100%; background: var(--primary); border-radius: 10px; width: 0%; transition: width 0.3s; }
 
         /* ШАПКА */
         header {
@@ -180,7 +203,7 @@
         nav a { color: var(--text-light); text-decoration: none; font-weight: 500; border-bottom: 2px solid transparent; padding: 6px 0; transition: var(--transition); }
         nav a:hover, nav a.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        .search-wrapper { display: flex; align-items: center; background: rgba(20,22,36,0.8); border-radius: 60px; padding: 6px 6px 6px 20px; border: 1px solid rgba(255,120,160,0.2); backdrop-filter: blur(8px); position: relative; }
+        .search-wrapper { display: flex; align-items: center; background: rgba(20,22,36,0.8); border-radius: 60px; padding: 6px 6px 6px 20px; border: 1px solid rgba(255,120,160,0.2); backdrop-filter: blur(8px); }
         #search-input { background: transparent; border: none; padding: 10px 12px; color: var(--text-light); width: 220px; outline: none; }
 
         .theme-toggle, .music-toggle {
@@ -249,19 +272,6 @@
         }
         .modal-close { float: right; font-size: 32px; cursor: pointer; }
 
-        /* Плеер */
-        .video-player {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 16px;
-            margin: 16px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-        }
-
         /* Секции */
         section { margin: 70px 0; }
         .section-header {
@@ -269,12 +279,7 @@
             margin-bottom: 28px; border-bottom: 2px dashed var(--primary); padding-bottom: 12px;
         }
         .section-header h2 { font-size: 2.3rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-        .badge {
-            background: rgba(255,120,160,0.15); padding: 6px 18px; border-radius: 40px;
-            color: var(--primary); font-weight: 600; border: 1px solid rgba(255,120,160,0.3);
-        }
 
-        /* Статистика топа */
         .top-stats {
             display: flex; gap: 16px; align-items: center;
             background: var(--bg-card); padding: 8px 20px; border-radius: 60px;
@@ -323,8 +328,8 @@
 
 <main class="container">
     <div class="hero" style="padding: 50px 0 30px; text-align: center;">
-        <h1 style="font-size: 3.5rem; font-weight: 800; background: linear-gradient(to right, #ffe6f0, #d9ceff); -webkit-background-clip: text; background-clip: text; color: transparent;">Открой мир <span class="text-glow">аниме</span></h1>
-        <p style="font-size: 1.3rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 32px;">Топ‑100 аниме с озвучкой на русском, английском, японском и китайском</p>
+        <h1 style="font-size: 3.5rem; font-weight: 800; background: linear-gradient(to right, #ffe6f0, #d9ceff); -webkit-background-clip: text; background-clip: text; color: transparent;">Смотри аниме <span class="text-glow">онлайн</span></h1>
+        <p style="font-size: 1.3rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 32px;">Топ‑100 с возможностью перехода на популярные платформы для просмотра</p>
         <a href="#top100" class="btn btn-large">Смотреть топ 100 <i class="fas fa-chevron-right"></i></a>
     </div>
 
@@ -409,7 +414,7 @@
     </section>
 </main>
 
-<!-- Модальное окно с языками и плеером -->
+<!-- Модальное окно с плеером-заглушкой и ссылками на платформы -->
 <div class="modal" id="animeModal">
     <div class="modal-content">
         <span class="modal-close">&times;</span>
@@ -454,7 +459,7 @@
         musicPlaying = !musicPlaying;
     });
 
-    // ---------- ДАННЫЕ JUJUTSU KAISEN (вручную) ----------
+    // ---------- ДАННЫЕ JUJUTSU KAISEN ----------
     const jjkData = [
         {
             mal_id: 99999,
@@ -487,7 +492,6 @@
     let filteredAnime = [];
     let favorites = JSON.parse(localStorage.getItem('animeFavorites') || '[]');
     let userRatings = JSON.parse(localStorage.getItem('userRatings') || '{}');
-    let watchProgress = JSON.parse(localStorage.getItem('watchProgress') || '{}');
     let currentPage = 1;
     let isLoading = false;
     let isFullTop100Loaded = false;
@@ -548,8 +552,6 @@
         const pages = [1, 2, 3, 4];
         const results = await Promise.all(pages.map(p => fetchTopAnimePage(p)));
         let fullData = results.flat();
-        
-        // Добавляем Jujutsu Kaisen в начало
         fullData = [...jjkData, ...fullData];
         
         const uniqueMap = new Map();
@@ -568,7 +570,6 @@
     async function loadInitialAnime() {
         isLoading = true;
         let data = await fetchTopAnimePage(1);
-        // Добавляем JJK
         data = [...jjkData, ...data];
         allAnimeData = data.slice(0, 25);
         applyFiltersAndSort();
@@ -661,13 +662,15 @@
         btn.classList.toggle('active');
     }
 
-    // Универсальное модальное окно с языками и плеером
+    // Универсальное модальное окно со ссылками на платформы
     function openAnimeModal(anime) {
         modal.style.display = 'flex';
         
-        // Определяем, является ли это одним из JJK для кастомного текста
         const isJJK = anime.mal_id === 99999 || anime.mal_id === 99998;
         const titleExtra = isJJK ? (anime.mal_id === 99999 ? ' • Фильм • 1ч 44м' : ' • Сериал • 24 эп.') : '';
+        
+        // Формируем поисковый запрос (убираем лишние символы)
+        const searchQuery = encodeURIComponent(anime.title);
         
         modalBody.innerHTML = `
             <h2>${anime.title}</h2>
@@ -680,34 +683,42 @@
                 <button class="lang-btn" data-lang="zh"><span class="fi fi-cn"></span> 中文</button>
             </div>
             
-            <div class="video-player" id="videoPlayer">
+            <div style="background: #000; border-radius: 16px; padding: 20px; margin: 16px 0; text-align: center;">
                 <i class="fas fa-play-circle" style="font-size: 48px; opacity: 0.5;"></i>
-                <span style="margin-left: 16px;">Выберите язык озвучки</span>
+                <p style="margin-top: 12px;">Выберите платформу для просмотра:</p>
+            </div>
+            
+            <div class="watch-platforms">
+                <a href="https://www.crunchyroll.com/search?q=${searchQuery}" target="_blank" class="platform-btn">
+                    <i class="fas fa-tv"></i> Crunchyroll
+                </a>
+                <a href="https://www.netflix.com/search?q=${searchQuery}" target="_blank" class="platform-btn">
+                    <i class="fas fa-film"></i> Netflix
+                </a>
+                <a href="https://www.kinopoisk.ru/index.php?kp_query=${searchQuery}" target="_blank" class="platform-btn">
+                    <i class="fas fa-video"></i> Кинопоиск
+                </a>
+                <a href="https://anilibria.top/search?q=${searchQuery}" target="_blank" class="platform-btn">
+                    <i class="fas fa-play"></i> AniLibria
+                </a>
+                <a href="https://www.youtube.com/results?search_query=${searchQuery}+аниме" target="_blank" class="platform-btn">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
             </div>
             
             <p style="margin-top: 16px;"><strong>Рейтинг:</strong> ${anime.score || '—'} <i class="fas fa-star" style="color: #ffd966;"></i></p>
             <p><strong>Жанры:</strong> ${anime.genres?.join(', ') || '—'}</p>
             <p><strong>Год:</strong> ${anime.year || '—'}</p>
             <p style="margin-top: 16px;">${anime.synopsis || 'Описание временно недоступно.'}</p>
-            <p style="margin-top: 20px; padding: 12px; background: rgba(255,120,160,0.1); border-radius: 16px;">
-                <i class="fas fa-globe"></i> Озвучка и субтитры доступны на выбранном языке. 
-                ${isJJK ? 'Доступно на Crunchyroll, Netflix, Prime Video.' : ''}
-            </p>
         `;
         
-        // Обработчики языков
+        // Обработчики языков (для имитации)
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const lang = btn.dataset.lang;
                 const langNames = { ru: 'Русская', en: 'Английская', jp: 'Японская', zh: 'Китайская' };
-                const videoPlayer = document.getElementById('videoPlayer');
-                videoPlayer.innerHTML = `
-                    <i class="fas fa-film" style="font-size: 48px; opacity: 0.7;"></i>
-                    <span style="margin-left: 16px;">Включена ${langNames[lang]} озвучка</span>
-                `;
-                showNotification(`Язык изменён на ${btn.textContent.trim()}`);
+                showNotification(`Язык изменён на ${langNames[btn.dataset.lang]} озвучку`);
             });
         });
     }
@@ -767,7 +778,7 @@
         applyFiltersAndSort();
     });
 
-    // Кликабельные названия в "С чего начать"
+    // Кликабельные названия
     document.querySelectorAll('.clickable-title').forEach(el => {
         el.addEventListener('click', () => {
             searchInput.value = el.innerText;
